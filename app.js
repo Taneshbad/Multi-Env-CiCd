@@ -4,7 +4,7 @@ const app = express();
 
 app.get("/", (req, res) => {
   res.json({
-    message: "Multi Environment CI/CD Demo"
+    message: "Multi Environment CI/CD Demo !!"
   });
 });
 
