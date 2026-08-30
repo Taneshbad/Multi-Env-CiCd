@@ -1,0 +1,31 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: |
+            IMAGE=ghcr.io/taneshbad/multi-env-cicd:${{ github.sha }}
+
+            docker pull $IMAGE
+
+            docker stop myapp || true
+            docker rm myapp || true
+
+            docker run -d \
+              --name myapp \
+              --restart unless-stopped \
+              -p 3000:3000 \
+              $IMAGE
