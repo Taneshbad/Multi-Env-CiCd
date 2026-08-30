@@ -17,15 +17,15 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_SSH_KEY }}
           script: |
-            IMAGE=ghcr.io/taneshbad/multi-env-cicd:${{ github.sha }}
+  IMAGE=ghcr.io/taneshbad/multi-env-cicd:latest
 
-            docker pull $IMAGE
+  docker pull $IMAGE
 
-            docker stop myapp || true
-            docker rm myapp || true
+  docker stop myapp || true
+  docker rm myapp || true
 
-            docker run -d \
-              --name myapp \
-              --restart unless-stopped \
-              -p 3000:3000 \
-              $IMAGE
+  docker run -d \
+    --name myapp \
+    --restart unless-stopped \
+    -p 3000:3000 \
+    $IMAGE

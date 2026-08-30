@@ -15,9 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: docker/login-action@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -30,7 +32,10 @@ jobs:
             -t ghcr.io/taneshbad/multi-env-cicd:latest \
             .
 
-      - name: Push Image
+      - name: Push SHA Tag
         run: |
           docker push ghcr.io/taneshbad/multi-env-cicd:${{ github.sha }}
+
+      - name: Push Latest Tag
+        run: |
           docker push ghcr.io/taneshbad/multi-env-cicd:latest
